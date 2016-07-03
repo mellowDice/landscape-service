@@ -12,11 +12,15 @@ import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 
-
+# microservices_urls = {
+#   'socket':'http://localhost:9000',
+#   'terrain': 'http://159.203.226.234',
+#   'field_objects': 'http://192.241.215.101', 
+# }
 microservices_urls = {
-    'terrain': 'http://localhost:7000',
-    'field_objects': 'http://localhost:7001',
-    'socket': 'http://localhost:9000'
+    'socket': 'http://104.236.155.241',
+    'terrain': 'http://159.203.226.234:7000',
+    'field_objects': 'http://192.241.215.101:7001',
 }
 
 @app.route('/')
