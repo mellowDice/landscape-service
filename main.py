@@ -8,6 +8,7 @@ import eventlet.wsgi
 import numpy as np
 import requests
 import datetime
+import traceback
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
@@ -41,7 +42,18 @@ def get_landscape():
     # return jsonify({'terrain': terrain}, 201)
     # return jsonify('ok')
     return 'ok'
+    
+# error handling
+@socketio.on_error()    
+def error_handler(e):
+    print('error', e, traceback.format_exc())
 
+    pass
+
+@socketio.on_error_default
+def default_error_handler(e):
+    print('error', e, traceback.format_exc())
+    pass
 
 if __name__ == '__main__':
     print('running')
