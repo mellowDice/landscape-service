@@ -17,16 +17,9 @@ import traceback
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 
-# microservices_urls = {
-#   'socket':'http://localhost:9000',
-#   'terrain': 'http://localhost:7000',
-#   'field_objects': 'http://localhost:7001', 
-# }
-microservices_urls = {
-    'socket': 'http://104.236.155.241',
-    'terrain': 'http://159.203.226.234:7000',
-    'field_objects': 'http://192.241.215.101:7001',
-}
+app.config.from_object('config.development')
+# Absolute path to the configuraiton file
+app.config.from_envvar('APP_CONFIG_FILE')
 
 @app.route('/')
 def test_connect():
@@ -38,15 +31,15 @@ def get_landscape():
     seed = datetime.datetime.now()
     seed = seed.hour + 24 * (seed.day + 31 * seed.month) * 4352 + 32454354
     print('get landscape')
-    # terrain = build_landscape(250, 250, seed=seed, octaves=1).tolist()
-    terrain = np.zeros((250, 250)).tolist()
-    requests.post(microservices_urls['field_objects']+'/store_terrain', json = {'terrain':terrain})
-    requests.post(microservices_urls['socket']+'/send_terrain', json = {'terrain':terrain})
+    terrain = build_landscape(250, 250, seed=seed).tolist()
+    # terrain = np.zeros((250, 250)).tolist()
+    requests.post(app.config['OBJECTS_URL']+'/store_terrain', json = {'terrain':terrain})
+    # requests.post(app.config['s`ocket']+'/send_terrain', json = {'terrain':terrain})
     # Delete once stored in Redis
-    print('in get landscape')
     # return jsonify({'terrain': terrain}, 201)
     # return jsonify('ok')
-    return 'ok'
+    # else return tests.tx
+    return jsonify(terrain)
 
 # error handling
 @app.errorhandler(500)
