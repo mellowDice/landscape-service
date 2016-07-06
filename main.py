@@ -5,13 +5,12 @@
 import eventlet
 eventlet.monkey_patch()
 
-from flask import Flask, make_response, jsonify
+from flask import Flask, make_response, jsonify, request
 from fractal_landscape import build_landscape
 
 import eventlet.wsgi
 import numpy as np
 import requests
-import datetime
 import traceback
 
 app = Flask(__name__)
@@ -26,14 +25,18 @@ def test_connect():
     return 'Docker hosting image on port 7000'
 
 
-@app.route('/get_landscape')
+@app.route('/get_landscape', methods=['GET'])
 def get_landscape():
-    seed = datetime.datetime.now()
-    seed = seed.hour + 24 * (seed.day + 31 * seed.month) * 4352 + 32454354
-    print('get landscape')
-    terrain = build_landscape(250, 250, seed=seed).tolist()
+
+    seed = int(request.args.get('seed'))
+    width = int(request.args.get('width'))
+    height = int(request.args.get('height'))
+    print('get landscape: seed=' + str(seed) +
+        ' width=' + str(width) +
+        ' height=' + str(height))
+    terrain = build_landscape(width, height, seed=seed).tolist()
     # terrain = np.zeros((250, 250)).tolist()
-    requests.post(app.config['OBJECTS_URL']+'/store_terrain', json = {'terrain':terrain})
+    # requests.post(app.config['OBJECTS_URL']+'/store_terrain', json = {'terrain':terrain})
     # requests.post(app.config['s`ocket']+'/send_terrain', json = {'terrain':terrain})
     # Delete once stored in Redis
     # return jsonify({'terrain': terrain}, 201)
