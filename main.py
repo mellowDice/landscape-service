@@ -35,13 +35,6 @@ def get_landscape():
         ' width=' + str(width) +
         ' height=' + str(height))
     terrain = build_landscape(width, height, seed=seed).tolist()
-    # terrain = np.zeros((250, 250)).tolist()
-    # requests.post(app.config['OBJECTS_URL']+'/store_terrain', json = {'terrain':terrain})
-    # requests.post(app.config['s`ocket']+'/send_terrain', json = {'terrain':terrain})
-    # Delete once stored in Redis
-    # return jsonify({'terrain': terrain}, 201)
-    # return jsonify('ok')
-    # else return tests.tx
     return jsonify(result =  terrain)
 
 # error handling
