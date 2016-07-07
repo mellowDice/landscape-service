@@ -42,7 +42,7 @@ def get_landscape():
     # return jsonify({'terrain': terrain}, 201)
     # return jsonify('ok')
     # else return tests.tx
-    return jsonify(terrain)
+    return jsonify(result =  terrain)
 
 # error handling
 @app.errorhandler(500)
