@@ -11,7 +11,7 @@ def build_landscape(width, height, octaves=8, scaling=1.8, seed=-1):
     for octave in range(octaves):
         # octave_intensity = noise_2d(width, height, width, height, seed=seed) * amplitude
         amplitude *= noise_2d(width, height, width/2, height/2, seed=seed)
-        landscape = landscape * (1 - amplitude) + noise_2d(width, height, scale, scale, seed=seed) * amplitude
+        landscape = landscape * (1 - amplitude) + noise_2d(width, height, scale, scale, seed=seed) * amplitude * (0.9 ** octave)
         scale /= scaling
     return landscape
                   
